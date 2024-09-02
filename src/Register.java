@@ -22,7 +22,7 @@ public class Register {
             int count = 0;
 
             /*
-             Checks if current denomination can be used (Starting from biggest denomination to smallest)
+             Checks if current denomination can be used (Starting from the biggest denomination to smallest)
              if so calculate how many can fit into amt and add to purse.
              */
             if (d.amount() <= amt && amt >= tolerance) {
@@ -60,7 +60,7 @@ public class Register {
         Purse purse = makeChange(amt);
 
         // Output the purse object
-        System.out.print(makeChange(amt));
+        System.out.print(purse);
 
     }
 }

@@ -71,6 +71,12 @@ public class Purse {
         // Initialize new StringBuilder
         StringBuilder sb = new StringBuilder();
 
+        // Gets double representation of amount in purse
+        double amt = getValue();
+
+        // Adds a first statement to the StringBuilder
+        sb.append("Your purse contains ").append(amt).append(" in").append("\n");
+
         // Stream the entries of the cash map, sort them by Denomination amount in descending order
         cash.entrySet().stream()
                 .sorted((entry1, entry2) -> Double.compare(entry2.getKey().amount(), entry1.getKey().amount()))
