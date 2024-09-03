@@ -2,39 +2,81 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class RegisterPanel {
 
     public static class TextFieldPanel extends JPanel {
         private final JTextField textField;
         private final JLabel label;
+        private Image backgroundImage;
+        private Image carnivalGuy;
 
         public TextFieldPanel() {
-            this.setPreferredSize(new Dimension(700, 700));
-            this.setBackground(Color.WHITE);
 
+            // Set size of Panel, and layout to BorderLayout
+            this.setPreferredSize(new Dimension(500, 500));
+            this.setLayout(null); // Use null layout for manual positioning
+
+            // Load the images
+            try {
+                backgroundImage = ImageIO.read(new File("src/images/backgroundLab1.png"));
+                carnivalGuy = ImageIO.read(new File("src/images/carnivalGuy.png"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            // Create and position the textField
             textField = new JTextField();
-            textField.setPreferredSize(new Dimension(300, 50));
+            textField.setPreferredSize(new Dimension(100, 50));
             textField.setFont(new Font("sanserif", Font.PLAIN, 40));
+            textField.setBounds(200, 400, 100, 50); // Set position manually
             textField.addActionListener(new InputListener());
 
-            label = new JLabel("Please Enter how much change you would like!");
-            label.setFont(new Font("sanserif", Font.PLAIN, 20));
+            // Create and position the label inside the circle
+            label = new JLabel("<html>How much change<br>am I getting back?</html>");
+            label.setFont(new Font("sanserif", Font.PLAIN, 10));
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            label.setBounds(112, 121, 100, 100); // Position label within the circle
 
+            // Add the components to the panel
             this.add(textField);
             this.add(label);
         }
 
-        private class InputListener implements ActionListener {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
 
+            // Draw the background image if it exists
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+
+            // Draw the CarnivalGuy if it exists
+            if (carnivalGuy != null) {
+                g.drawImage(carnivalGuy, 0, 50, getWidth(), getHeight(), this);
+            }
+
+            // Draw the white circle
+            g.setColor(Color.WHITE);
+            g.fillOval(110, 120, 100, 100); // x, y, width, height of the circle
+
+            // Draw the border of the circle
+            g.setColor(Color.BLACK);
+            g.drawOval(110, 120, 100, 100); // x, y, width, height of the circle
+        }
+
+        private class InputListener implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 String text = textField.getText();
                 double amt = Double.parseDouble(text);
 
                 System.out.println(text);
 
-                label.setText("$" + amt);
-                label.setIcon(new ImageIcon("images/penny.jfif"));
+                label.setText("<html>Thank you for the <br>change for $" + amt + "</html>");
 
             }
         }

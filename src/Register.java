@@ -20,7 +20,6 @@ public class Register {
         // Iterates through denomination list, calculating minimum number of bills / coins that can fit inside the amt
         for (Purse.Denomination d: purse.getAllDenomination()) {
             int count = 0;
-
             /*
              Checks if current denomination can be used (Starting from the biggest denomination to smallest)
              if so calculate how many can fit into amt and add to purse.

@@ -11,7 +11,6 @@ public class MakingChange {
 
         // Create an instance of RegisterPanel.TextFieldPanel
         RegisterPanel.TextFieldPanel registerPanel = new RegisterPanel.TextFieldPanel();
-        registerPanel.setPreferredSize(new Dimension(500, 500));
 
         // Add the custom panel to the frame
         frame.getContentPane().add(registerPanel);
