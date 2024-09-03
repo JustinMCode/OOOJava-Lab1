@@ -105,6 +105,7 @@ public class Purse {
         return allDenomination;
     }
 
+    // Returns current contents of a purse
     public Map<Purse.Denomination, Integer> getCash() {
         return cash;
     }

@@ -15,7 +15,7 @@ public class MakingChange {
         // Add the custom panel to the frame
         frame.getContentPane().add(registerPanel);
 
-        // finish initializing frame and panel.
+        // Finish initializing frame and panel.
         frame.pack();
         frame.setVisible(true);
     }

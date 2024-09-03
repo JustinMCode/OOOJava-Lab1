@@ -4,17 +4,21 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.util.Map;
+import java.util.List;
 
 public class PursePanel extends JPanel {
     private Purse purse;
 
+    // Constructor for the PursePanel class
     public PursePanel(Purse purse) {
         this.purse = purse;
+
+        // Set size of panel and make background transparent
         setPreferredSize(new Dimension(400, 400));
         setOpaque(false);
     }
 
-    @Override
+    // Allows for custom drawing
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -24,8 +28,14 @@ public class PursePanel extends JPanel {
         int imageWidth = 120;
         int imageHeight = 80;
 
-        // Iterate through the contents of the purse
-        for (Map.Entry<Purse.Denomination, Integer> entry : purse.getCash().entrySet()) {
+        // Get the denominations in the purse sorted by amount in descending order
+        List<Map.Entry<Purse.Denomination, Integer>> sortedEntries = purse.getCash().entrySet()
+                .stream()
+                .sorted((entry1, entry2) -> Double.compare(entry2.getKey().amount(), entry1.getKey().amount()))
+                .toList();
+
+        // Iterate through the sorted contents of the purse
+        for (Map.Entry<Purse.Denomination, Integer> entry : sortedEntries) {
 
             Purse.Denomination denom = entry.getKey();
             int quantity = entry.getValue();
@@ -47,14 +57,15 @@ public class PursePanel extends JPanel {
             }
 
             // Move to the right for the next denomination
-            x += imageWidth + 10; // Adjust x position based on image width and spacing
-            if (x > getWidth() - imageWidth) { // If we reach the end of the panel, move to the next line
+            x += imageWidth + 10;
+            if (x > getWidth() - imageWidth) {
                 x = 10;
-                y += imageHeight + 10; // Move y position down for the next row
+                y += imageHeight + 10;
             }
         }
     }
 
+    // Method to update the purse and repaint the panel if needed
     public void setPurse(Purse purse) {
         this.purse = purse;
         repaint(); // Repaint the panel to update the display
