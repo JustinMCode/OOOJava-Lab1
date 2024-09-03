@@ -13,6 +13,7 @@ public class RegisterPanel {
         private final JLabel label;
         private Image backgroundImage;
         private Image carnivalGuy;
+        private final PursePanel pursePanel;
 
         public TextFieldPanel() {
 
@@ -32,18 +33,24 @@ public class RegisterPanel {
             textField = new JTextField();
             textField.setPreferredSize(new Dimension(100, 50));
             textField.setFont(new Font("sanserif", Font.PLAIN, 40));
-            textField.setBounds(200, 400, 100, 50); // Set position manually
+            textField.setBounds(200, 400, 130, 50);
             textField.addActionListener(new InputListener());
 
             // Create and position the label inside the circle
             label = new JLabel("<html>How much change<br>am I getting back?</html>");
             label.setFont(new Font("sanserif", Font.PLAIN, 10));
             label.setHorizontalAlignment(SwingConstants.CENTER);
-            label.setBounds(112, 121, 100, 100); // Position label within the circle
+            label.setBounds(112, 255, 100, 100);
+
+            // Initialize PursePanel and add it to the TextFieldPanel
+            Purse purse = new Purse();
+            pursePanel = new PursePanel(purse);
+            pursePanel.setBounds(10, 10, 450, 300);
 
             // Add the components to the panel
             this.add(textField);
             this.add(label);
+            this.add(pursePanel);
         }
 
         @Override
@@ -62,11 +69,11 @@ public class RegisterPanel {
 
             // Draw the white circle
             g.setColor(Color.WHITE);
-            g.fillOval(110, 120, 100, 100); // x, y, width, height of the circle
+            g.fillOval(110, 250, 100, 100); // x, y, width, height of the circle
 
             // Draw the border of the circle
             g.setColor(Color.BLACK);
-            g.drawOval(110, 120, 100, 100); // x, y, width, height of the circle
+            g.drawOval(110, 250, 100, 100); // x, y, width, height of the circle
         }
 
         private class InputListener implements ActionListener {
@@ -77,6 +84,14 @@ public class RegisterPanel {
                 System.out.println(text);
 
                 label.setText("<html>Thank you for the <br>change for $" + amt + "</html>");
+
+                // Call Register.makeChange method with amt and get updated purse
+                Purse newPurse = Register.makeChange(amt);
+
+                // Update the PursePanel with the new purse
+                pursePanel.setPurse(newPurse);
+
+                System.out.println(newPurse);
 
             }
         }

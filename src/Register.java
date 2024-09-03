@@ -25,18 +25,22 @@ public class Register {
              if so calculate how many can fit into amt and add to purse.
              */
             if (d.amount() <= amt && amt >= tolerance) {
-                do {
+                while (d.amount() <= amt && amt >= tolerance) {
                     amt -= d.amount();
                     count++;
-                } while(d.amount() <= amt && amt >= tolerance);
+                }
 
                 // Add denomination and number of bills / coins to the purse
                 purse.add(d, count);
             }
         }
 
-        // Clean up small value in amt bc I dunno tbh.. sounds right.
-        amt = 0;
+        // Final check to ensure any remaining small amount is accounted for
+        if (amt < 0.01 && amt >= tolerance) {
+            Purse.Denomination penny = purse.getAllDenomination().getLast();
+            purse.add(penny, 1);
+            amt = 0;
+        }
 
         // Return the purse object
         return purse;

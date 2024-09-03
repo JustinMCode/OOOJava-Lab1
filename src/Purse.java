@@ -13,12 +13,12 @@ public class Purse {
     }
 
     // Define bill denominations
-    private final Denomination hundredBill = new Denomination("Hundred Dollar Bill", 100.00, Denomination.Form.BILL, "hundred.png");
-    private final Denomination fiftyBill = new Denomination("Fifty Dollar Bill", 50.00, Denomination.Form.BILL, "fifty.png");
-    private final Denomination twentyBill = new Denomination("Twenty Dollar Bill", 20.00, Denomination.Form.BILL, "twenty.png");
-    private final Denomination tenBill = new Denomination("Ten Dollar Bill", 10.00, Denomination.Form.BILL, "ten.png");
-    private final Denomination fiveBill = new Denomination("Five Dollar Bill", 5.00, Denomination.Form.BILL, "five.png");
-    private final Denomination oneBill = new Denomination("One Dollar Bill", 1.00, Denomination.Form.BILL, "one.png");
+    private final Denomination hundredBill = new Denomination("Hundred Dollar Bill", 100.00, Denomination.Form.BILL, "hundred_note.png");
+    private final Denomination fiftyBill = new Denomination("Fifty Dollar Bill", 50, Denomination.Form.BILL, "fifty_note.png");
+    private final Denomination twentyBill = new Denomination("Twenty Dollar Bill", 20.00, Denomination.Form.BILL, "twenty_note.png");
+    private final Denomination tenBill = new Denomination("Ten Dollar Bill", 10.00, Denomination.Form.BILL, "ten_note.png");
+    private final Denomination fiveBill = new Denomination("Five Dollar Bill", 5.00, Denomination.Form.BILL, "five_note.png");
+    private final Denomination oneBill = new Denomination("One Dollar Bill", 1.00, Denomination.Form.BILL, "one_note.png");
 
     // Define coin denominations
     private final Denomination quarterCoin = new Denomination("Quarter", 0.25, Denomination.Form.COIN, "quarter.png");
@@ -60,8 +60,11 @@ public class Purse {
 
             // Calculate value of denomination and add to total
             totalAmount += d.amount * quantity;
-
         }
+
+        // Round the total amount to two decimal places
+        totalAmount = Math.round(totalAmount * 100.0) / 100.0;
+
         return totalAmount;
     }
 
@@ -101,33 +104,10 @@ public class Purse {
     public List<Denomination> getAllDenomination() {
         return allDenomination;
     }
-}
 
-//public static void main(String[] args) {
-//////        // Create a new Purse instance
-//  Purse purse = new Purse();
-//////
-//////        // Add some denominations to the purse
-// purse.add(purse.hundredBill, 2);  // Add 2 hundred dollar bills
-// purse.add(purse.fiftyBill, 1);    // Add 1 fifty dollar bill
-//purse.add(purse.oneBill, 4);  // Add 4 quarters
-//    purse.add(purse.quarterCoin, 4);  // Add 4 quarters
-//
-//////
-//////        // Calculate and print the total value
-//////        double totalValue = purse.getValue();
-//////
-//////        System.out.println(totalValue);
-//////
-//////        // Testing removal
-//////        // double re = purse.remove(purse.hundredBill, 1);
-//////
-//////        //totalValue = purse.getValue();
-//////
-//////        //System.out.println(totalValue);
-//String totalStringValue = purse.toString();
-//System.out.println(purse.toString());
-//////
-//}
-////
-//}
+    public Map<Purse.Denomination, Integer> getCash() {
+        return cash;
+    }
+
+
+}
