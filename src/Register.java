@@ -8,7 +8,7 @@ public class Register {
         Purse purse = new Purse();
 
         // Tolerance for small amounts
-        double tolerance = 0.005;
+        double tolerance = 0.004;
 
         // Checks if amt is within the thresh-hold value of .009 - 0.001 and if so, return 1 penny and set amt to 0
         if (amt < 0.01 && amt >= tolerance) {

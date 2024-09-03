@@ -85,17 +85,17 @@ public class RegisterPanel {
                 String text = textField.getText();
                 double amt = Double.parseDouble(text);
 
-                // Update label
-                label.setText("<html>Thank you for the purse containing $" + amt + "</html>");
-
                 // Call Register.makeChange method with amt and get updated purse
                 Purse newPurse = Register.makeChange(amt);
 
                 // Update the PursePanel with the new purse
                 pursePanel.setPurse(newPurse);
 
+                // Update label
+                label.setText("<html>Thank you for the purse containing $" + newPurse.getValue()  + "</html>");
+
                 // Output newPurse to console
-                System.out.println(newPurse);
+                System.out.println(newPurse.toString());
 
             }
         }
