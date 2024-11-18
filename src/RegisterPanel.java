@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public class RegisterPanel {
 
     public static class TextFieldPanel extends JPanel {
-        // Declare components adn images used in the panel
+        // Declare components and images used in the panel
         private final JTextField textField;
         private final JLabel label;
         private Image backgroundImage;
@@ -17,7 +17,7 @@ public class RegisterPanel {
         private final PursePanel pursePanel;
 
         public TextFieldPanel() {
-            // Set size of Panel, and layout to BorderLayout
+            // Set size of Panel, and layout to null for absolute positioning
             this.setPreferredSize(new Dimension(500, 500));
             this.setLayout(null);
 
@@ -43,7 +43,7 @@ public class RegisterPanel {
             label.setBounds(117, 255, 100, 100);
 
             // Initialize PursePanel to display the change and add it to the TextFieldPanel
-            Purse purse = new Purse();
+            Purse purse = Register.getInstance().getPurse();
             pursePanel = new PursePanel(purse);
             pursePanel.setBounds(10, 10, 450, 300);
 
@@ -80,23 +80,27 @@ public class RegisterPanel {
         // Handles the input action
         private class InputListener implements ActionListener {
             public void actionPerformed(ActionEvent e) {
-
-                // Get text and convert to double
                 String text = textField.getText();
-                double amt = Double.parseDouble(text);
+                double amt;
 
-                // Call Register.makeChange method with amt and get updated purse
-                Purse newPurse = Register.makeChange(amt);
+                try {
+                    amt = Double.parseDouble(text);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid number.");
+                    return;
+                }
 
-                // Update the PursePanel with the new purse
+                // Create a MakeChangeCommand
+                Command makeChange = new MakeChangeCommand(Register.getInstance(), amt);
+                makeChange.execute();
+
+                Purse newPurse = Register.getInstance().getPurse();
                 pursePanel.setPurse(newPurse);
 
-                // Update label
                 label.setText("<html>Thank you for the purse containing $" + newPurse.getValue()  + "</html>");
 
                 // Output newPurse to console
-                System.out.println(newPurse.toString());
-
+                System.out.println(newPurse);
             }
         }
     }

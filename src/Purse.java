@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,30 @@ public class Purse {
     // HashMap that will represent the money in a purse
     private final HashMap<Denomination, Integer> cash = new HashMap<>();
 
+    // List of all denominations
+    private final List<Denomination> allDenomination = List.of(
+            hundredBill, fiftyBill, twentyBill, tenBill, fiveBill, oneBill,
+            quarterCoin, dimeCoin, nickelCoin, pennyCoin
+    );
+
+    // List of observers
+    private final List<Observer> observers = new ArrayList<>();
+
+    // Observer pattern methods
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
+
     // Method that adds a number of particular denominations to cash HashMap
     public void add(Denomination d, int amount) {
         if (cash.containsKey(d)) {
@@ -36,17 +61,19 @@ public class Purse {
         } else {
             cash.put(d, amount); // If denomination does not exist than add starting amount
         }
+        notifyObservers();
     }
 
     // Removes an amount of a certain denomination and returns the amount left in purse
-    public double remove(Denomination d, int amount) {
+    public void remove(Denomination d, int amount) {
         // Finds the denomination and removes x amount of them
         if (cash.containsKey(d)) {
             cash.put(d, cash.get(d) - amount);
         }
 
         // Returns a double of the total amount left in the purse
-        return getValue();
+        notifyObservers();
+        getValue();
     }
 
     // Returns the total amount of money in the purse
@@ -54,12 +81,12 @@ public class Purse {
         double totalAmount = 0.0;
 
         // Cycles through the cash HashMap and generates the total amount of money
-        for (HashMap.Entry<Denomination, Integer> entry : cash.entrySet()) {
+        for (Map.Entry<Denomination, Integer> entry : cash.entrySet()) {
             Denomination d = entry.getKey();
             int quantity = entry.getValue();
 
             // Calculate value of denomination and add to total
-            totalAmount += d.amount * quantity;
+            totalAmount += d.amount() * quantity;
         }
 
         // Round the total amount to two decimal places
@@ -88,17 +115,11 @@ public class Purse {
                     String quantity = Integer.toString(entry.getValue()); // Converts int quantity to string
 
                     // Append sorted entries to the StringBuilder
-                    sb.append(quantity).append(" ").append(d.name()).append(" ").append("\n");
+                    sb.append(quantity).append(" ").append(d.name()).append("\n");
                 });
 
         return sb.toString();
     }
-
-    // Store all denominations in a list for easy iteration over
-    private final List<Denomination> allDenomination = List.of(
-            hundredBill, fiftyBill, twentyBill, tenBill, fiveBill, oneBill,
-            quarterCoin, dimeCoin, nickelCoin, pennyCoin
-    );
 
     // Returns all denominations
     public List<Denomination> getAllDenomination() {
@@ -109,6 +130,4 @@ public class Purse {
     public Map<Purse.Denomination, Integer> getCash() {
         return cash;
     }
-
-
 }

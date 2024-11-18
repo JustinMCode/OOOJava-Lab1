@@ -6,12 +6,13 @@ import javax.imageio.ImageIO;
 import java.util.Map;
 import java.util.List;
 
-public class PursePanel extends JPanel {
+public class PursePanel extends JPanel implements Observer {
     private Purse purse;
 
     // Constructor for the PursePanel class
     public PursePanel(Purse purse) {
         this.purse = purse;
+        this.purse.addObserver(this); // Register as observer
 
         // Set size of panel and make background transparent
         setPreferredSize(new Dimension(400, 400));
@@ -68,6 +69,13 @@ public class PursePanel extends JPanel {
     // Method to update the purse and repaint the panel if needed
     public void setPurse(Purse purse) {
         this.purse = purse;
+        this.purse.addObserver(this); // Re-register if a new purse is set
         repaint(); // Repaint the panel to update the display
+    }
+
+    // Observer pattern update method
+    @Override
+    public void update() {
+        repaint(); // Repaint the panel when the purse updates
     }
 }
